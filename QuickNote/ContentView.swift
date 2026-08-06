@@ -6,56 +6,49 @@
 //
 
 import SwiftUI
-import SwiftData
+
+enum Tabs {
+    case home, settings
+}
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
+    @State var selectedTab: Tabs = .home
+    @State var notes: [String] = []
+    @State var newNote: String = ""
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+        TabView(selection: $selectedTab) {
+            Tab("Home", systemImage: "house", value: .home) {
+                VStack(alignment: .leading, spacing: 20) {
+                    ForEach(notes, id: \.self) { note in
+                        Text(note)
                     }
+                    TextField("New Note...", text: $newNote)
+                        .onSubmit {
+                            addNote()
+                        }
                 }
-                .onDelete(perform: deleteItems)
+                .padding()
+                Spacer()
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
+            
+            Tab("Settings", systemImage: "gear", value: .settings) {
+                Text("Settings")
             }
-        } detail: {
-            Text("Select an item")
         }
+        
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
+    
+    private func addNote() {
+        let trimmed = newNote.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !trimmed.isEmpty else { return }
+        
+        notes.append(trimmed)
+        newNote = ""
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }
