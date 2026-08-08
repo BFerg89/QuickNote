@@ -8,44 +8,23 @@
 import SwiftUI
 
 enum Tabs {
-    case home, settings
+    case home, notes
 }
 
 struct ContentView: View {
     @State var selectedTab: Tabs = .home
-    @State var notes: [String] = []
-    @State var newNote: String = ""
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab("Home", systemImage: "house", value: .home) {
-                VStack(alignment: .leading, spacing: 20) {
-                    ForEach(notes, id: \.self) { note in
-                        Text(note)
-                    }
-                    TextField("New Note...", text: $newNote)
-                        .onSubmit {
-                            addNote()
-                        }
-                }
-                .padding()
-                Spacer()
+            Tab("Home", systemImage: "square.and.pencil", value: .home) {
+                HomeView()
             }
             
-            Tab("Settings", systemImage: "gear", value: .settings) {
-                Text("Settings")
+            Tab("Notes", systemImage: "folder", value: .notes) {
+                Text("Notes")
             }
         }
         
-    }
-    
-    private func addNote() {
-        let trimmed = newNote.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        guard !trimmed.isEmpty else { return }
-        
-        notes.append(trimmed)
-        newNote = ""
     }
 }
 
