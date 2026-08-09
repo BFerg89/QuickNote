@@ -1,0 +1,74 @@
+# Project-specific
+AGENTS.md
+
+# macOS
+.DS_Store
+._*
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.xccheckout
+*.xcscmblueprint
+*.xcarchive
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Editors
+.vscode/
+.idea/
+
+# Temporary files
+*.swp
+*.swo
+*~
+*.tmp
+```
+```gitignore
+# Project-specific
+AGENTS.md
+
+# macOS
+.DS_Store
+._*
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.xccheckout
+*.xcscmblueprint
+*.xcarchive
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Editors
+.vscode/
+.idea/
+
+# Temporary files
+*.swp
+*.swo
+*~
+*.tmp
