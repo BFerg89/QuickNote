@@ -9,12 +9,13 @@ import SwiftUI
 
 struct NoteRow: View {
     let note: Note
+    let delete: () -> Void
     
     var body: some View {
         HStack {
             Text(note.text)
             Spacer()
-            Button(action: {}) {
+            Button(action: delete) {
                 Image(systemName: "multiply")
             }
             .buttonStyle(.bordered)
@@ -24,5 +25,5 @@ struct NoteRow: View {
 }
 
 #Preview {
-    NoteRow(note: Note(text: "Test"))
+    NoteRow(note: Note(text: "Test"), delete: {})
 }

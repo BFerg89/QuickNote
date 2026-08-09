@@ -29,7 +29,9 @@ struct HomeView: View {
             
             //Notes + Input section
             ForEach(notes) { note in
-                NoteRow(note: note)
+                NoteRow(note: note, delete: {
+                    modelContext.delete(note)
+                })
             }
             TextField("New Note...", text: $newNote)
                 .focused($isNewNoteFocused)
