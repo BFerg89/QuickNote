@@ -10,16 +10,17 @@ import SwiftData
 
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var notes: [Note]
+    @Query(sort: [SortDescriptor(\Note.createdAt, order: .forward)]) private var notes: [Note]
     
     @State private var newNote: String = ""
+    @FocusState private var isNewNoteFocused: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             //Top Buttons
             HStack(alignment: .center) {
                 Spacer()
-                Button(action: nothing) {
+                Button(action: {}) {
                     Image(systemName: "checkmark")
                 }
                 .buttonStyle(.borderedProminent)
@@ -31,12 +32,17 @@ struct HomeView: View {
                 NoteRow(note: note)
             }
             TextField("New Note...", text: $newNote)
+                .focused($isNewNoteFocused)
                 .onSubmit {
                     addNote()
                 }
+            Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    isNewNoteFocused = true
+                }
         }
         .padding()
-        Spacer()
     }
     
     private func addNote() {
@@ -47,12 +53,9 @@ struct HomeView: View {
         modelContext.insert(Note(text: trimmed))
         newNote = ""
     }
-    
-    private func nothing() {
-        
-    }
 }
 
 #Preview {
     HomeView()
+        .modelContainer(for: Note.self, inMemory: true)
 }

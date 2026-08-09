@@ -14,15 +14,13 @@ struct NoteRow: View {
         HStack {
             Text(note.text)
             Spacer()
-            Button(action: delete) {
+            Button(action: {}) {
                 Image(systemName: "multiply")
             }
             .buttonStyle(.bordered)
             .buttonBorderShape(.circle)
         }
     }
-    
-    private func delete() {}
 }
 
 #Preview {
