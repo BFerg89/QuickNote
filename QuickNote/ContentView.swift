@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 enum Tabs {
     case home, notes
@@ -21,7 +22,7 @@ struct ContentView: View {
             }
             
             Tab("Notes", systemImage: "folder", value: .notes) {
-                Text("Notes")
+                NotesView()
             }
         }
         
@@ -30,4 +31,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(for: Note.self, inMemory: true)
 }

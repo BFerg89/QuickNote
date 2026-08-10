@@ -13,7 +13,7 @@ struct NoteRow: View {
     
     var body: some View {
         HStack {
-            Text(note.text)
+            Text(note.rawText)
             Spacer()
             Button(action: delete) {
                 Image(systemName: "multiply")

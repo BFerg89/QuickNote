@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		91FE1FFB3028E5EE00927364 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 91FE1FFA3028E5EE00927364 /* .gitignore */; };
+		91FE20013028E71F00927364 /* AGENTS.md in Resources */ = {isa = PBXBuildFile; fileRef = 91FE20003028E71F00927364 /* AGENTS.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		919B6AB6302446BD007452E2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +32,8 @@
 		919B6AA6302446BB007452E2 /* QuickNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		919B6AB5302446BD007452E2 /* QuickNoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickNoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		919B6ABF302446BD007452E2 /* QuickNoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickNoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		91FE1FFA3028E5EE00927364 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = .gitignore; sourceTree = "<group>"; };
+		91FE20003028E71F00927364 /* AGENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AGENTS.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +82,8 @@
 		919B6A9D302446BB007452E2 = {
 			isa = PBXGroup;
 			children = (
+				91FE20003028E71F00927364 /* AGENTS.md */,
+				91FE1FFA3028E5EE00927364 /* .gitignore */,
 				919B6AA8302446BB007452E2 /* QuickNote */,
 				919B6AB8302446BD007452E2 /* QuickNoteTests */,
 				919B6AC2302446BD007452E2 /* QuickNoteUITests */,
@@ -212,6 +221,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91FE1FFB3028E5EE00927364 /* .gitignore in Resources */,
+				91FE20013028E71F00927364 /* AGENTS.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
