@@ -85,6 +85,17 @@ struct CategoriesView: View {
         NavigationLink {
             NoteListView(category: category)
                 .navigationTitle(title(for: category))
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text(title(for: category))
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .glassEffect(.regular, in: Capsule())
+                    }
+                }
         } label: {
             noteCard(
                 title: title(for: category),
