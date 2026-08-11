@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NotesView: View {
+struct CategoriesView: View {
     private let spacing: CGFloat = 16
     private let maximumCardHeight: CGFloat = 140
 
@@ -56,15 +56,21 @@ struct NotesView: View {
                     }
                 }
 
-                noteCard(
-                    title: "All Notes",
-                    color: Color(
-                        red: 142.0 / 255.0,
-                        green: 142.0 / 255.0,
-                        blue: 147.0 / 255.0
+                NavigationLink {
+                    NoteListView(category: nil)
+                        .navigationTitle("All Notes")
+                } label: {
+                    noteCard(
+                        title: "All Notes",
+                        color: Color(
+                            red: 142.0 / 255.0,
+                            green: 142.0 / 255.0,
+                            blue: 147.0 / 255.0
+                        )
                     )
-                )
-                    .frame(height: wideCardHeight)
+                }
+                .buttonStyle(.plain)
+                .frame(height: wideCardHeight)
             }
             .padding(spacing)
             .frame(
@@ -76,10 +82,16 @@ struct NotesView: View {
     }
 
     private func categoryCard(for category: NoteCategory) -> some View {
-        noteCard(
-            title: title(for: category),
-            color: color(for: category)
-        )
+        NavigationLink {
+            NoteListView(category: category)
+                .navigationTitle(title(for: category))
+        } label: {
+            noteCard(
+                title: title(for: category),
+                color: color(for: category)
+            )
+        }
+        .buttonStyle(.plain)
     }
 
     private func noteCard(title: String, color: Color) -> some View {
@@ -160,5 +172,5 @@ struct NotesView: View {
 }
 
 #Preview {
-    NotesView()
+    CategoriesView()
 }

@@ -22,7 +22,9 @@ struct ContentView: View {
             }
             
             Tab("Notes", systemImage: "folder", value: .notes) {
-                NotesView()
+                NavigationStack {
+                    CategoriesView()
+                }
             }
         }
         
