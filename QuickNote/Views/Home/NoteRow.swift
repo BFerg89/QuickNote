@@ -13,7 +13,14 @@ struct NoteRow: View {
     
     var body: some View {
         HStack {
-            Text(note.rawText)
+            VStack(alignment: .leading, spacing: 4) {
+                if let title = note.title, !title.isEmpty {
+                    Text(title)
+                        .font(.headline)
+                }
+                
+                Text(note.processedText ?? note.rawText)
+            }
             Spacer()
             Button(action: delete) {
                 Image(systemName: "multiply")

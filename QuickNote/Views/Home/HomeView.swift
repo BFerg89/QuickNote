@@ -52,8 +52,13 @@ struct HomeView: View {
         
         guard !trimmed.isEmpty else { return }
         
-        modelContext.insert(Note(text: trimmed))
+        let note = Note(text: trimmed)
+        modelContext.insert(note)
         newNote = ""
+
+        Task {
+            await NoteProcessor.process(note)
+        }
     }
 }
 
