@@ -29,9 +29,15 @@ enum NoteProcessor {
                 Preserve the user's original meaning and never invent details.
                 Lightly correct spelling and grammar.
 
-                If the input is clearly a list, format processedText as plain text
-                with each item on a separate line beginning with "- ".
-                Otherwise, return concise corrected plain text.
+                Decide whether the note body is text or a list.
+
+                A sequence of two or more distinct items is a list, including
+                comma-separated or space-separated items such as groceries.
+                For a list, return one lightly corrected item per array element.
+                Do not include bullets, dashes, numbering, or punctuation around
+                the individual item values.
+
+                For text, return concise, lightly corrected plain text.
 
                 Generate a short title when useful.
 
@@ -53,7 +59,7 @@ enum NoteProcessor {
                     
                     <note>
                     \(note.rawText)
-                    <\note>
+                    </note>
                     """,
                 generating: GeneratedNote.self
             )
@@ -61,7 +67,16 @@ enum NoteProcessor {
             let generated = response.content
             
             note.title = generated.title
-            note.processedText = generated.processedText
+
+            switch generated.body {
+            case .text(let content):
+                note.processedText = content
+            case .list(let items):
+                note.processedText = items
+                    .map { "- \($0)" }
+                    .joined(separator: "\n")
+            }
+
             note.category = generated.category
             note.processingState = .completed
         } catch {

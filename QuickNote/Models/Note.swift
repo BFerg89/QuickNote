@@ -26,9 +26,20 @@ enum ProcessingState: String, Codable {
 }
 
 @Generable
+enum GeneratedNoteBody {
+    case text(content: String)
+    case list(items: [String])
+}
+
+@Generable
 struct GeneratedNote {
     var title: String?
-    var processedText: String
+    
+    @Guide(
+        description: "Use list for a sequence of items, including comma-separated items. Put exactly one item in each array element. Otherwise use text."
+    )
+    var body: GeneratedNoteBody
+    
     var category: NoteCategory
 }
 
