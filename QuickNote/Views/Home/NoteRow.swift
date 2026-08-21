@@ -6,6 +6,34 @@
 //
 
 import SwiftUI
+import Foundation
+
+private struct ArcSpinner: View {
+    @State private var isRotating = false
+
+    var body: some View {
+        Circle()
+            .trim(from: 0, to: 0.28)
+            .stroke(
+                .secondary,
+                style: StrokeStyle(
+                    lineWidth: 2.25,
+                    lineCap: .round
+                )
+            )
+            .frame(width: 16, height: 16)
+            .rotationEffect(.degrees(isRotating ? 360 : 0))
+            .animation(
+                .linear(duration: 0.75)
+                    .repeatForever(autoreverses: false),
+                value: isRotating
+            )
+            .onAppear {
+                isRotating = true
+            }
+            .accessibilityLabel("Organizing note")
+    }
+}
 
 struct NoteRow: View {
     let note: Note
@@ -22,15 +50,32 @@ struct NoteRow: View {
                 Text(note.processedText ?? note.rawText)
             }
             Spacer()
-            Button(action: delete) {
-                Image(systemName: "multiply")
+            if note.processingState == .processing {
+                ArcSpinner()
+            } else if let dueDate = note.dueDate {
+                VStack(alignment: .center, spacing: 2) {
+                    Text(dueDate.formatted(.dateTime.weekday(.wide)))
+
+                    Text(
+                        dueDate.formatted(
+                            .dateTime.month(.abbreviated).day().year()
+                        )
+                    )
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
             }
-            .buttonStyle(.bordered)
-            .buttonBorderShape(.circle)
         }
     }
 }
 
 #Preview {
-    NoteRow(note: Note(text: "Test"), delete: {})
+    NoteRow(
+        note: {
+            let note = Note(text: "Test")
+            note.dueDate = .now
+            return note
+        }(),
+        delete: {}
+    )
 }

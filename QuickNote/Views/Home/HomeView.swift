@@ -17,16 +17,6 @@ struct HomeView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            //Top Buttons
-            HStack(alignment: .center) {
-                Spacer()
-                Button(action: {}) {
-                    Image(systemName: "checkmark")
-                }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.circle)
-            }
-            
             //Notes + Input section
             ForEach(notes) { note in
                 NoteRow(note: note, delete: {
