@@ -10,16 +10,17 @@ import SwiftData
 
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: [SortDescriptor(\Note.createdAt, order: .forward)]) private var notes: [Note]
     
+    @State private var sessionNotes: [Note] = []
     @State private var newNote: String = ""
     @FocusState private var isNewNoteFocused: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             //Notes + Input section
-            ForEach(notes) { note in
+            ForEach(sessionNotes) { note in
                 NoteRow(note: note, delete: {
+                    sessionNotes.removeAll { $0 === note }
                     modelContext.delete(note)
                 })
             }
@@ -44,6 +45,7 @@ struct HomeView: View {
         
         let note = Note(text: trimmed)
         modelContext.insert(note)
+        sessionNotes.append(note)
         newNote = ""
 
         Task {
