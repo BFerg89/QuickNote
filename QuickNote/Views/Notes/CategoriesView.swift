@@ -62,6 +62,7 @@ struct CategoriesView: View {
                 } label: {
                     noteCard(
                         title: "All Notes",
+                        systemImage: "square.stack.3d.up.fill",
                         color: Color(
                             red: 142.0 / 255.0,
                             green: 142.0 / 255.0,
@@ -99,23 +100,20 @@ struct CategoriesView: View {
         } label: {
             noteCard(
                 title: title(for: category),
+                systemImage: icon(for: category),
                 color: color(for: category)
             )
         }
         .buttonStyle(.plain)
     }
 
-    private func noteCard(title: String, color: Color) -> some View {
+    private func noteCard(title: String, systemImage: String, color: Color) -> some View {
         RoundedRectangle(cornerRadius: 12, style: .continuous)
-            .fill(.ultraThinMaterial)
+            .fill(.thinMaterial)
             .frame(maxWidth: .infinity)
             .overlay {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(color.opacity(0.2))
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .stroke(Color.white.opacity(0.55), lineWidth: 1)
+                    .fill(color.opacity(0.5))
             }
             .shadow(
                 color: color.opacity(0.12),
@@ -124,11 +122,42 @@ struct CategoriesView: View {
                 y: 6
             )
             .overlay {
-                Text(title)
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.primary.opacity(0.8))
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        ZStack {
+                            Circle()
+                                .fill(color.opacity(0.25))
+                                .stroke(color.opacity(0.15), lineWidth: 1)
+                            Image(systemName: systemImage)
+                        }
+                        .frame(width: 36, height: 36)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }
+                    
+                    Spacer()
+                    
+                    Text(title)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                }
+                .padding(16)
             }
+    }
+    
+    private func icon(for category: NoteCategory) -> String {
+        switch category {
+        case .todo:
+            "checkmark"
+        case .social:
+            "person.2.fill"
+        case .work:
+            "briefcase.fill"
+        case .admin:
+            "folder.fill"
+        case .misc:
+            "square.grid.2x2.fill"
+        }
     }
 
     private func color(for category: NoteCategory) -> Color {
