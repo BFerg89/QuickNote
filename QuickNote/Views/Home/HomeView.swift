@@ -16,26 +16,32 @@ struct HomeView: View {
     @FocusState private var isNewNoteFocused: Bool
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            //Notes + Input section
-            ForEach(sessionNotes) { note in
-                NoteRow(note: note, delete: {
-                    sessionNotes.removeAll { $0 === note }
-                    modelContext.delete(note)
-                })
+        ZStack {
+            Image("paper-texture")
+                .resizable(resizingMode: .tile)
+                .opacity(0.25)
+                .ignoresSafeArea()
+            VStack(alignment: .leading, spacing: 20) {
+                //Notes + Input section
+                ForEach(sessionNotes) { note in
+                    NoteRow(note: note, delete: {
+                        sessionNotes.removeAll { $0 === note }
+                        modelContext.delete(note)
+                    })
+                }
+                TextField("New Note...", text: $newNote)
+                    .focused($isNewNoteFocused)
+                    .onSubmit {
+                        addNote()
+                    }
+                Color.clear
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        isNewNoteFocused = true
+                    }
             }
-            TextField("New Note...", text: $newNote)
-                .focused($isNewNoteFocused)
-                .onSubmit {
-                    addNote()
-                }
-            Color.clear
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    isNewNoteFocused = true
-                }
+            .padding()
         }
-        .padding()
     }
     
     private func addNote() {
