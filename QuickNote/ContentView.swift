@@ -13,12 +13,36 @@ enum Tabs {
 }
 
 struct ContentView: View {
+    private let titles = [
+        "Hold that thought!", "Write it down!", "Lock it in!",
+        "Capture this!", "Drop it here!", "Quick jot!",
+        "Just a thought...", "Mental note...", "Before you forget...",
+        "Save for later...", "Pass it to paper...", "Notes to self..."
+    ]
+    @State var currentTitle: String = ""
     @State var selectedTab: Tabs = .home
     
     var body: some View {
         TabView(selection: $selectedTab) {
             Tab("Home", systemImage: "square.and.pencil", value: .home) {
-                HomeView()
+                NavigationStack {
+                    HomeView()
+                        .navigationTitle(currentTitle)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .principal) {
+                                Text(currentTitle)
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .glassEffect(.regular, in: Capsule())
+                            }
+                        }
+                }
+                .onAppear {
+                    currentTitle = titles.randomElement() ?? "Quick Note"
+                }
             }
             
             Tab("Notes", systemImage: "folder", value: .notes) {
