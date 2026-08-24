@@ -19,11 +19,11 @@ enum NoteProcessor {
             let generated: GeneratedNote
             
             if FoundationProcessor.isAvailable {
+                //On-device foundation model
                 generated = try await FoundationProcessor.process(note.rawText)
             } else {
-                //Strictly placeholder
-                generated = try await FoundationProcessor.process(note.rawText)
-                //Replace with ExternalProcessor
+                //Gemini model
+                generated = try await ExternalProcessor.process(note.rawText)
             }
             
             note.title = generated.title

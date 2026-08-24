@@ -7,9 +7,20 @@
 
 import SwiftUI
 import SwiftData
+import FirebaseCore
+import FirebaseAppCheck
 
 @main
 struct QuickNoteApp: App {
+    init() {
+        #if DEBUG
+        let providerFactory = AppCheckDebugProviderFactory()
+        AppCheck.setAppCheckProviderFactory(providerFactory)
+        #endif
+        
+        FirebaseApp.configure()
+    }
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Note.self,

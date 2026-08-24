@@ -6,3 +6,24 @@
 //
 
 import Foundation
+import FirebaseAILogic
+
+enum ExternalProcessor {
+    private static let ai = FirebaseAI.firebaseAI(backend: .googleAI())
+    private static let model = ai.geminiModel(name: "gemini-3.5-flash-lite")
+    
+    static func process(_ rawText: String) async throws -> GeneratedNote {
+        let session = ai.generativeModelSession(
+            model: model,
+            instructions: NoteProcessingPrompt.instructions()
+        )
+        
+        let response = try await session.respond(
+            to: NoteProcessingPrompt.request(for: rawText),
+            generating: GeneratedNote.self
+        )
+        
+        return response.content
+    }
+}
+

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91A09813303CB33A00D41A08 /* FirebaseAILogic in Frameworks */ = {isa = PBXBuildFile; productRef = 91A09812303CB33A00D41A08 /* FirebaseAILogic */; };
+		91A09815303CB33A00D41A08 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 91A09814303CB33A00D41A08 /* FirebaseAppCheck */; };
 		91FE1FFB3028E5EE00927364 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 91FE1FFA3028E5EE00927364 /* .gitignore */; };
 		91FE20013028E71F00927364 /* AGENTS.md in Resources */ = {isa = PBXBuildFile; fileRef = 91FE20003028E71F00927364 /* AGENTS.md */; };
 /* End PBXBuildFile section */
@@ -59,6 +61,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91A09815303CB33A00D41A08 /* FirebaseAppCheck in Frameworks */,
+				91A09813303CB33A00D41A08 /* FirebaseAILogic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +125,8 @@
 			);
 			name = QuickNote;
 			packageProductDependencies = (
+				91A09812303CB33A00D41A08 /* FirebaseAILogic */,
+				91A09814303CB33A00D41A08 /* FirebaseAppCheck */,
 			);
 			productName = QuickNote;
 			productReference = 919B6AA6302446BB007452E2 /* QuickNote.app */;
@@ -204,6 +210,9 @@
 			);
 			mainGroup = 919B6A9D302446BB007452E2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				91A09811303CB33A00D41A08 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 919B6AA7302446BB007452E2 /* Products */;
 			projectDirPath = "";
@@ -593,6 +602,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		91A09811303CB33A00D41A08 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.18.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		91A09812303CB33A00D41A08 /* FirebaseAILogic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91A09811303CB33A00D41A08 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAILogic;
+		};
+		91A09814303CB33A00D41A08 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91A09811303CB33A00D41A08 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 919B6A9E302446BB007452E2 /* Project object */;
 }
