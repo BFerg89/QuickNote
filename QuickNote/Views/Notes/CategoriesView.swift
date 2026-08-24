@@ -64,9 +64,9 @@ struct CategoriesView: View {
                         title: "All Notes",
                         systemImage: "square.stack.3d.up.fill",
                         color: Color(
-                            red: 142.0 / 255.0,
-                            green: 142.0 / 255.0,
-                            blue: 147.0 / 255.0
+                            red: 104.0 / 255.0,
+                            green: 112.0 / 255.0,
+                            blue: 124.0 / 255.0
                         )
                     )
                 }
@@ -113,26 +113,29 @@ struct CategoriesView: View {
             .frame(maxWidth: .infinity)
             .overlay {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(color.opacity(0.5))
+                    .fill(color.opacity(0.12))
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .stroke(.white.opacity(0.22), lineWidth: 0.75)
             }
             .shadow(
-                color: color.opacity(0.12),
-                radius: 12,
+                color: .black.opacity(0.06),
+                radius: 10,
                 x: 0,
-                y: 6
+                y: 4
             )
             .overlay {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
-                        ZStack {
-                            Circle()
-                                .fill(color.opacity(0.25))
-                                .stroke(color.opacity(0.15), lineWidth: 1)
-                            Image(systemName: systemImage)
-                        }
-                        .frame(width: 36, height: 36)
+                        Image(systemName: systemImage)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(color)
+                            .frame(width: 36, height: 36, alignment: .leading)
                         Spacer()
                         Image(systemName: "chevron.right")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.tertiary)
                     }
                     
                     Spacer()
@@ -164,33 +167,33 @@ struct CategoriesView: View {
         switch category {
         case .todo:
             Color(
-                red: 255.0 / 255.0,
-                green: 69.0 / 255.0,
-                blue: 58.0 / 255.0
+                red: 184.0 / 255.0,
+                green: 87.0 / 255.0,
+                blue: 82.0 / 255.0
             )
         case .social:
             Color(
-                red: 191.0 / 255.0,
-                green: 90.0 / 255.0,
-                blue: 242.0 / 255.0
+                red: 161.0 / 255.0,
+                green: 108.0 / 255.0,
+                blue: 168.0 / 255.0
             )
         case .work:
             Color(
-                red: 10.0 / 255.0,
-                green: 132.0 / 255.0,
-                blue: 255.0 / 255.0
+                red: 82.0 / 255.0,
+                green: 131.0 / 255.0,
+                blue: 177.0 / 255.0
             )
         case .admin:
             Color(
-                red: 255.0 / 255.0,
-                green: 159.0 / 255.0,
-                blue: 10.0 / 255.0
+                red: 181.0 / 255.0,
+                green: 139.0 / 255.0,
+                blue: 79.0 / 255.0
             )
         case .misc:
             Color(
-                red: 48.0 / 255.0,
-                green: 209.0 / 255.0,
-                blue: 88.0 / 255.0
+                red: 94.0 / 255.0,
+                green: 151.0 / 255.0,
+                blue: 119.0 / 255.0
             )
         }
     }

@@ -16,7 +16,7 @@ struct ContentView: View {
     private let titles = [
         "Hold that thought!", "Write it down!", "Lock it in!",
         "Capture this!", "Drop it here!", "Quick jot!",
-        "Just a thought...", "Mental note...", "Before you forget...",
+        "Mental note...", "Before you forget...",
         "Save for later...", "Pass it to paper...", "Notes to self..."
     ]
     @State var currentTitle: String = ""
