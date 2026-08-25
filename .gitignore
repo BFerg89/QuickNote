@@ -1,44 +1,7 @@
 # Project-specific
 AGENTS.md
 /Inspiration/
-
-# macOS
-.DS_Store
-._*
-
-# Xcode
-xcuserdata/
-*.xcuserstate
-DerivedData/
-build/
-*.xccheckout
-*.xcscmblueprint
-*.xcarchive
-
-# Swift Package Manager
-.build/
-.swiftpm/
-
-# Environment / secrets
-.env
-.env.*
-!.env.example
-*.pem
-*.key
-
-# Editors
-.vscode/
-.idea/
-
-# Temporary files
-*.swp
-*.swo
-*~
-*.tmp
-```
-```gitignore
-# Project-specific
-AGENTS.md
+MODEL_GENERATION_TEST_RESULTS.md
 
 # macOS
 .DS_Store
