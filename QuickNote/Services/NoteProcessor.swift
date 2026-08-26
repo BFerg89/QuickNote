@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FoundationModels
 
 enum NoteProcessor {
     @MainActor
@@ -16,7 +15,7 @@ enum NoteProcessor {
         note.processingState = .processing
         
         do {
-            let generated = try await generate(from: note.rawText)
+            let generated = try await NoteGenerator.generate(from: note.rawText)
             
             note.title = generated.title
             note.dueDate = date(from: generated.dueDate)
@@ -35,18 +34,6 @@ enum NoteProcessor {
         } catch {
             note.processingState = .failed
             print("Note processing failed: \(error)")
-        }
-    }
-
-    private static func generate(from rawText: String) async throws -> GeneratedNote {
-        guard FoundationProcessor.isAvailable else {
-            return try await ExternalProcessor.process(rawText)
-        }
-
-        do {
-            return try await FoundationProcessor.process(rawText)
-        } catch LanguageModelSession.GenerationError.unsupportedLanguageOrLocale {
-            return try await ExternalProcessor.process(rawText)
         }
     }
 
