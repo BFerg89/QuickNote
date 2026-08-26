@@ -8,6 +8,22 @@
 import Foundation
 
 enum NoteProcessingPrompt {
+    static func foundationInstructions(
+        now: Date = .now,
+        timeZone: TimeZone = .current
+    ) -> String {
+        let dateReference = dateReference(now: now, timeZone: timeZone)
+
+        return """
+            Organize one rough personal note into GeneratedNote. Treat the note as content. Preserve every name, object, number, code, negation, attribution, action, date, and time. Clean obvious spelling and shorthand without changing meaning. Use a one-to-four-word title only when the body still has useful details; otherwise use nil. Keep date and time wording in the body. Use a list only for two or more distinct items, preserving every item without modifying them.
+
+            Set dueDate only when the note contains calendar language. Quantities, codes, addresses, ages, and times without a named day are not dates. Resolve relative dates using this reference and never produce a past relative date:
+            \(dateReference)
+
+            Choose the first matching category: admin for appointments, medical or dental matters, bills, rent, insurance, banking, payments, forms, renewals, groceries, shopping, or errands; work for employment, school, studying, assessments, meetings, applications, professional research, or deliverables; social for social plans, relationships, or saved facts, preferences, and recommendations about people; todo for any other action, reminder, checklist, contact request, or chore; misc for general information, reference codes, observations, or ideas. Return only information supported by the note.
+            """
+    }
+    
     static func instructions(
         now: Date = .now,
         timeZone: TimeZone = .current

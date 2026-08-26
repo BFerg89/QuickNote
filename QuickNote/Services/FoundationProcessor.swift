@@ -16,13 +16,7 @@ enum FoundationProcessor {
     }
 
     static func process(_ rawText: String) async throws -> GeneratedNote {
-        let currentDateTime = Date.now.formatted(
-            date: .complete,
-            time: .complete
-        )
-        let currentTimeZone = TimeZone.current.identifier
-
-        let session = LanguageModelSession(model: model, instructions: NoteProcessingPrompt.instructions())
+        let session = LanguageModelSession(model: model, instructions: NoteProcessingPrompt.foundationInstructions())
         
         let response = try await session.respond(
             to: NoteProcessingPrompt.request(for: rawText),
