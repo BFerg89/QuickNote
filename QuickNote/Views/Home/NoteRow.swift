@@ -38,9 +38,44 @@ private struct ArcSpinner: View {
 struct NoteRow: View {
     let note: Note
     let delete: () -> Void
+
+    private var categoryColor: Color {
+        switch note.category {
+        case .todo:
+            Color(
+                red: 184.0 / 255.0,
+                green: 87.0 / 255.0,
+                blue: 82.0 / 255.0
+            )
+        case .social:
+            Color(
+                red: 161.0 / 255.0,
+                green: 108.0 / 255.0,
+                blue: 168.0 / 255.0
+            )
+        case .work:
+            Color(
+                red: 82.0 / 255.0,
+                green: 131.0 / 255.0,
+                blue: 177.0 / 255.0
+            )
+        case .admin:
+            Color(
+                red: 181.0 / 255.0,
+                green: 139.0 / 255.0,
+                blue: 79.0 / 255.0
+            )
+        case .misc:
+            Color(
+                red: 94.0 / 255.0,
+                green: 151.0 / 255.0,
+                blue: 119.0 / 255.0
+            )
+        }
+    }
     
     var body: some View {
-        HStack {
+        HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
                 if let title = note.title, !title.isEmpty {
                     Text(title)
@@ -52,8 +87,44 @@ struct NoteRow: View {
             Spacer()
             if note.processingState == .processing {
                 ArcSpinner()
-            } else if let dueDate = note.dueDate {
-                VStack(alignment: .center, spacing: 2) {
+            } else if note.processingState == .completed {
+                HStack(spacing: 5) {
+                    Circle()
+                        .fill(categoryColor)
+                        .frame(width: 5, height: 5)
+
+                    Text(note.category.rawValue)
+                        .foregroundStyle(.primary)
+                }
+                .font(.caption2.weight(.semibold))
+                .lineLimit(1)
+                .padding(.horizontal, 9)
+                .padding(.vertical, 5)
+                .background {
+                    Capsule()
+                        .fill(.thinMaterial)
+                        .overlay {
+                            Capsule()
+                                .fill(categoryColor.opacity(0.16))
+                        }
+                        .overlay {
+                            Capsule()
+                                .stroke(
+                                    .white.opacity(0.22),
+                                    lineWidth: 0.75
+                                )
+                        }
+                        .shadow(
+                            color: .black.opacity(0.06),
+                            radius: 4,
+                            x: 0,
+                            y: 2
+                        )
+                }
+            }
+
+            if let dueDate = note.dueDate {
+                VStack(alignment: .trailing, spacing: 2) {
                     Text(dueDate.formatted(.dateTime.weekday(.wide)))
 
                     Text(
@@ -64,6 +135,7 @@ struct NoteRow: View {
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)
+                .multilineTextAlignment(.trailing)
             }
         }
     }
@@ -74,6 +146,8 @@ struct NoteRow: View {
         note: {
             let note = Note(text: "Test")
             note.dueDate = .now
+            note.category = .social
+            note.processingState = .completed
             return note
         }(),
         delete: {}
