@@ -26,6 +26,7 @@ build/
 !.env.example
 *.pem
 *.key
+/QuickNote/GoogleService-Info.plist
 
 # Editors
 .vscode/
