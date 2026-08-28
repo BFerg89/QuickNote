@@ -32,6 +32,21 @@ enum GeneratedNoteBody {
 }
 
 @Generable
+struct GeneratedDueTime {
+    @Guide(
+        description: "Hour using 24-hour time, from 0 through 23.",
+        .range(0...23)
+    )
+    var hour: Int
+
+    @Guide(
+        description: "Minute from 0 through 59.",
+        .range(0...59)
+    )
+    var minute: Int
+}
+
+@Generable
 struct GeneratedDueDate {
     var year: Int
 
@@ -46,6 +61,11 @@ struct GeneratedDueDate {
         .range(1...31)
     )
     var day: Int
+
+    @Guide(
+        description: "The resolved local time when the note includes a time. Otherwise return nil."
+    )
+    var time: GeneratedDueTime?
 }
 
 @Generable
@@ -73,6 +93,7 @@ class Note {
     var processedText: String?
     var title: String?
     var dueDate: Date?
+    var dueTime: Date?
     
     var category: NoteCategory
     

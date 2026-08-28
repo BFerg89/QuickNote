@@ -85,6 +85,28 @@ struct NoteRow: View {
                 Text(note.processedText ?? note.rawText)
             }
             Spacer()
+
+            if let dueDate = note.dueDate {
+                VStack(alignment: .center, spacing: 2) {
+                    if let dueTime = note.dueTime {
+                        Text(
+                            "\(dueDate.formatted(.dateTime.weekday(.wide))), \(dueTime.formatted(.dateTime.hour().minute()))"
+                        )
+                    } else {
+                        Text(dueDate.formatted(.dateTime.weekday(.wide)))
+                    }
+
+                    Text(
+                        dueDate.formatted(
+                            .dateTime.month(.abbreviated).day().year()
+                        )
+                    )
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.trailing)
+            }
+
             if note.processingState == .processing {
                 ArcSpinner()
             } else if note.processingState == .completed {
@@ -122,21 +144,6 @@ struct NoteRow: View {
                         )
                 }
             }
-
-            if let dueDate = note.dueDate {
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text(dueDate.formatted(.dateTime.weekday(.wide)))
-
-                    Text(
-                        dueDate.formatted(
-                            .dateTime.month(.abbreviated).day().year()
-                        )
-                    )
-                }
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.trailing)
-            }
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             Button(role: .destructive, action: delete) {
@@ -151,6 +158,7 @@ struct NoteRow: View {
         note: {
             let note = Note(text: "Test")
             note.dueDate = .now
+            note.dueTime = .now
             note.category = .social
             note.processingState = .completed
             return note

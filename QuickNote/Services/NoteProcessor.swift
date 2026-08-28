@@ -24,7 +24,9 @@ enum NoteProcessor {
             guard !note.isDeleted else { return }
             
             note.title = generated.title
-            note.dueDate = date(from: generated.dueDate)
+            let resolvedDueDate = date(from: generated.dueDate)
+            note.dueDate = resolvedDueDate?.date
+            note.dueTime = resolvedDueDate?.time
 
             switch generated.body {
             case .text(let content):
@@ -45,7 +47,9 @@ enum NoteProcessor {
         }
     }
 
-    private static func date(from generatedDate: GeneratedDueDate?) -> Date? {
+    private static func date(
+        from generatedDate: GeneratedDueDate?
+    ) -> (date: Date, time: Date?)? {
         guard let generatedDate else { return nil }
 
         var calendar = Calendar.current
@@ -71,6 +75,30 @@ enum NoteProcessor {
             return nil
         }
 
-        return date
+        guard let generatedTime = generatedDate.time else {
+            return (date, nil)
+        }
+
+        components.hour = generatedTime.hour
+        components.minute = generatedTime.minute
+
+        guard let dateWithTime = calendar.date(from: components) else {
+            return (date, nil)
+        }
+
+        let resolvedTimeComponents = calendar.dateComponents(
+            [.year, .month, .day, .hour, .minute],
+            from: dateWithTime
+        )
+
+        guard resolvedTimeComponents.year == generatedDate.year,
+              resolvedTimeComponents.month == generatedDate.month,
+              resolvedTimeComponents.day == generatedDate.day,
+              resolvedTimeComponents.hour == generatedTime.hour,
+              resolvedTimeComponents.minute == generatedTime.minute else {
+            return (date, nil)
+        }
+
+        return (date, dateWithTime)
     }
 }

@@ -91,7 +91,11 @@ enum NoteProcessingPrompt {
             - A deadline on "the first" uses NEXT_FIRST_OF_MONTH.
             - A relative date is not in the past.
             - The date must match the stated weekday.
-            - dueDate stores only year, month, and day. Keep any time in the body.
+            - dueDate stores year, month, and day, plus a time only when the note
+              includes one.
+            - Resolve a stated time into local 24-hour hour and minute values using the
+              note's context. Do not invent a time when none is stated.
+            - Keep the original date and time meaning in the body.
 
             DATE REFERENCE
 
@@ -122,6 +126,7 @@ enum NoteProcessingPrompt {
             - The body does not repeat information already clear from the title.
             - List items are not merged, dropped, or invented.
             - dueDate exists only when the note contains a calendar day.
+            - dueDate.time exists only when the note also contains a time.
             - A relative date is not in the past.
             - The category follows the ordered rules.
             """
