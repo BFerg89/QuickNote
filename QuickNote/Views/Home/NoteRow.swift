@@ -154,6 +154,16 @@ struct NoteRow: View {
                             y: 2
                         )
                 }
+            } else if note.processingState == .failed {
+                Label(
+                    "Processing failed",
+                    systemImage: "exclamationmark.circle.fill"
+                )
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.red)
+                .padding(.horizontal, 9)
+                .padding(.vertical, 5)
+                .background(.red.opacity(0.1), in: Capsule())
             }
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
@@ -178,10 +188,10 @@ struct NoteRow: View {
     NoteRow(
         note: {
             let note = Note(text: "Test")
-            note.dueDate = .now
-            note.dueTime = .now
             note.category = .social
             note.processingState = .completed
+            note.dueDate = .now
+            note.dueTime = .now
             return note
         }(),
         delete: {}
