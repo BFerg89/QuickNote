@@ -51,38 +51,7 @@ struct NoteRow: View {
     }
 
     private var categoryColor: Color {
-        switch note.category {
-        case .todo:
-            Color(
-                red: 184.0 / 255.0,
-                green: 87.0 / 255.0,
-                blue: 82.0 / 255.0
-            )
-        case .social:
-            Color(
-                red: 161.0 / 255.0,
-                green: 108.0 / 255.0,
-                blue: 168.0 / 255.0
-            )
-        case .work:
-            Color(
-                red: 82.0 / 255.0,
-                green: 131.0 / 255.0,
-                blue: 177.0 / 255.0
-            )
-        case .admin:
-            Color(
-                red: 181.0 / 255.0,
-                green: 139.0 / 255.0,
-                blue: 79.0 / 255.0
-            )
-        case .misc:
-            Color(
-                red: 94.0 / 255.0,
-                green: 151.0 / 255.0,
-                blue: 119.0 / 255.0
-            )
-        }
+        note.category.color
     }
     
     var body: some View {
@@ -95,7 +64,7 @@ struct NoteRow: View {
                 
                 Text(note.processedText ?? note.rawText)
             }
-            Spacer()
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             if let dueDate = note.dueDate {
                 VStack(alignment: .center, spacing: 2) {
@@ -126,7 +95,7 @@ struct NoteRow: View {
                         .fill(categoryColor)
                         .frame(width: 5, height: 5)
 
-                    Text(note.category.rawValue)
+                    Text(note.category.displayTitle)
                         .foregroundStyle(.primary)
                 }
                 .font(.caption2.weight(.semibold))
@@ -138,7 +107,11 @@ struct NoteRow: View {
                         .fill(.thinMaterial)
                         .overlay {
                             Capsule()
-                                .fill(categoryColor.opacity(0.16))
+                                .fill(
+                                    categoryColor.opacity(
+                                        QuickNoteStyle.categoryTintOpacity
+                                    )
+                                )
                         }
                         .overlay {
                             Capsule()
@@ -155,12 +128,13 @@ struct NoteRow: View {
                         )
                 }
             } else if note.processingState == .failed {
-                Label(
-                    "Processing failed",
-                    systemImage: "exclamationmark.circle.fill"
-                )
+                HStack(spacing: 5) {
+                    Image(systemName: "exclamationmark.circle.fill")
+                    Text("Processing failed")
+                }
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(.red)
+                .lineLimit(1)
                 .padding(.horizontal, 9)
                 .padding(.vertical, 5)
                 .background(.red.opacity(0.1), in: Capsule())

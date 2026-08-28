@@ -27,18 +27,7 @@ struct ContentView: View {
             Tab("Home", systemImage: "square.and.pencil", value: .home) {
                 NavigationStack {
                     HomeView()
-                        .navigationTitle(currentTitle)
-                        .navigationBarTitleDisplayMode(.inline)
-                        .toolbar {
-                            ToolbarItem(placement: .principal) {
-                                Text(currentTitle)
-                                    .font(.title3)
-                                    .fontWeight(.semibold)
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 8)
-                                    .glassEffect(.regular, in: Capsule())
-                            }
-                        }
+                        .quickNoteNavigationTitle(currentTitle)
                 }
                 .onAppear {
                     currentTitle = titles.randomElement() ?? "Quick Note"
@@ -48,6 +37,7 @@ struct ContentView: View {
             Tab("Notes", systemImage: "folder", value: .notes) {
                 NavigationStack {
                     CategoriesView()
+                        .quickNoteNavigationTitle("Notes")
                 }
             }
         }

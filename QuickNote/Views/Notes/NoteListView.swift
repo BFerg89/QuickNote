@@ -27,12 +27,31 @@ struct NoteListView: View {
             note.category == category
         }
     }
+
+    private var title: String {
+        category?.displayTitle ?? "All Notes"
+    }
     
     var body: some View {
-        List(notes) { note in
-            NoteRow(note: note) {
-                modelContext.delete(note)
+        ZStack {
+            QuickNotePaperBackground()
+
+            List(notes) { note in
+                NoteRow(note: note, delete: {
+                    modelContext.delete(note)
+                }, regenerate: {
+                    regenerate(note: note)
+                })
+                .quickNoteListRowStyle()
             }
+            .quickNoteListStyle()
+        }
+        .quickNoteNavigationTitle(title)
+    }
+
+    private func regenerate(note: Note) {
+        Task {
+            await NoteProcessor.retry(note)
         }
     }
 }

@@ -9,12 +9,15 @@ import SwiftUI
 
 struct CategoriesView: View {
     private let spacing: CGFloat = 16
+    private let gridHorizontalSpacing: CGFloat = 12
     private let maximumCardHeight: CGFloat = 140
 
-    private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+    private var columns: [GridItem] {
+        [
+            GridItem(.flexible(), spacing: gridHorizontalSpacing),
+            GridItem(.flexible())
+        ]
+    }
 
     private let gridCategories: [NoteCategory] = [
         .social,
@@ -24,84 +27,73 @@ struct CategoriesView: View {
     ]
 
     var body: some View {
-        GeometryReader { geometry in
-            let availableWideCardHeight = (
-                geometry.size.height - (spacing * 5)
-            ) / 4
-            let wideCardHeight = max(
-                0,
-                min(maximumCardHeight, availableWideCardHeight)
-            )
-            let availableGridHeight = (
-                geometry.size.height
-                    - (spacing * 5)
-                    - (wideCardHeight * 2)
-            ) / 2
-            let availableGridWidth = (
-                geometry.size.width - (spacing * 3)
-            ) / 2
-            let gridCardSize = max(
-                0,
-                min(availableGridWidth, availableGridHeight)
-            )
+        ZStack {
+            QuickNotePaperBackground()
 
-            VStack(spacing: spacing) {
-                categoryCard(for: .todo)
-                    .frame(height: wideCardHeight)
+            GeometryReader { geometry in
+                let availableWideCardHeight = (
+                    geometry.size.height - (spacing * 5)
+                ) / 4
+                let wideCardHeight = max(
+                    0,
+                    min(maximumCardHeight, availableWideCardHeight)
+                )
+                let availableGridHeight = (
+                    geometry.size.height
+                        - (spacing * 5)
+                        - (wideCardHeight * 2)
+                ) / 2
+                let gridColumnWidth = (
+                    geometry.size.width
+                        - (spacing * 2)
+                        - gridHorizontalSpacing
+                ) / 2
+                let gridCardHeight = max(
+                    0,
+                    min(gridColumnWidth, availableGridHeight)
+                )
 
-                LazyVGrid(columns: columns, spacing: spacing) {
-                    ForEach(gridCategories, id: \.rawValue) { category in
-                        categoryCard(for: category)
-                            .frame(width: gridCardSize, height: gridCardSize)
+                VStack(spacing: spacing) {
+                    categoryCard(for: .todo)
+                        .frame(height: wideCardHeight)
+
+                    LazyVGrid(columns: columns, spacing: spacing) {
+                        ForEach(gridCategories, id: \.rawValue) { category in
+                            categoryCard(for: category)
+                                .frame(height: gridCardHeight)
+                        }
                     }
-                }
 
-                NavigationLink {
-                    NoteListView(category: nil)
-                        .navigationTitle("All Notes")
-                } label: {
-                    noteCard(
-                        title: "All Notes",
-                        systemImage: "square.stack.3d.up.fill",
-                        color: Color(
-                            red: 104.0 / 255.0,
-                            green: 112.0 / 255.0,
-                            blue: 124.0 / 255.0
+                    NavigationLink {
+                        NoteListView(category: nil)
+                    } label: {
+                        noteCard(
+                            title: "All Notes",
+                            systemImage: "square.stack.3d.up.fill",
+                            color: QuickNoteStyle.allNotesColor
                         )
-                    )
+                    }
+                    .buttonStyle(.plain)
+                    .frame(height: wideCardHeight)
                 }
-                .buttonStyle(.plain)
-                .frame(height: wideCardHeight)
+                .padding(spacing)
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                    alignment: .center
+                )
             }
-            .padding(spacing)
-            .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity,
-                alignment: .center
-            )
         }
     }
 
     private func categoryCard(for category: NoteCategory) -> some View {
         NavigationLink {
             NoteListView(category: category)
-                .navigationTitle(title(for: category))
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text(title(for: category))
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .glassEffect(.regular, in: Capsule())
-                    }
-                }
         } label: {
             noteCard(
-                title: title(for: category),
-                systemImage: icon(for: category),
-                color: color(for: category)
+                title: category.displayTitle,
+                systemImage: category.systemImage,
+                color: category.color
             )
         }
         .buttonStyle(.plain)
@@ -113,7 +105,9 @@ struct CategoriesView: View {
             .frame(maxWidth: .infinity)
             .overlay {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(color.opacity(0.12))
+                    .fill(
+                        color.opacity(QuickNoteStyle.categoryTintOpacity)
+                    )
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -148,70 +142,6 @@ struct CategoriesView: View {
             }
     }
     
-    private func icon(for category: NoteCategory) -> String {
-        switch category {
-        case .todo:
-            "checkmark"
-        case .social:
-            "person.2.fill"
-        case .work:
-            "briefcase.fill"
-        case .admin:
-            "folder.fill"
-        case .misc:
-            "square.grid.2x2.fill"
-        }
-    }
-
-    private func color(for category: NoteCategory) -> Color {
-        switch category {
-        case .todo:
-            Color(
-                red: 184.0 / 255.0,
-                green: 87.0 / 255.0,
-                blue: 82.0 / 255.0
-            )
-        case .social:
-            Color(
-                red: 161.0 / 255.0,
-                green: 108.0 / 255.0,
-                blue: 168.0 / 255.0
-            )
-        case .work:
-            Color(
-                red: 82.0 / 255.0,
-                green: 131.0 / 255.0,
-                blue: 177.0 / 255.0
-            )
-        case .admin:
-            Color(
-                red: 181.0 / 255.0,
-                green: 139.0 / 255.0,
-                blue: 79.0 / 255.0
-            )
-        case .misc:
-            Color(
-                red: 94.0 / 255.0,
-                green: 151.0 / 255.0,
-                blue: 119.0 / 255.0
-            )
-        }
-    }
-
-    private func title(for category: NoteCategory) -> String {
-        switch category {
-        case .todo:
-            "To-Do"
-        case .social:
-            "Social"
-        case .work:
-            "Work"
-        case .admin:
-            "Admin"
-        case .misc:
-            "Misc"
-        }
-    }
 }
 
 #Preview {

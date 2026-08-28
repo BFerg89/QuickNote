@@ -21,10 +21,8 @@ struct HomeView: View {
     
     var body: some View {
         ZStack {
-            Image("paper-texture")
-                .resizable(resizingMode: .tile)
-                .opacity(0.25)
-                .ignoresSafeArea()
+            QuickNotePaperBackground()
+
             List {
                 ForEach(visibleSessionNotes) { note in
                     NoteRow(note: note, delete: {
@@ -33,16 +31,7 @@ struct HomeView: View {
                     }, regenerate: {
                         regenerate(note: note)
                     })
-                    .listRowInsets(
-                        EdgeInsets(
-                            top: 10,
-                            leading: 16,
-                            bottom: 10,
-                            trailing: 16
-                        )
-                    )
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
+                    .quickNoteListRowStyle()
                 }
 
                 TextField("New Note...", text: $newNote)
@@ -50,20 +39,9 @@ struct HomeView: View {
                     .onSubmit {
                         addNote()
                     }
-                    .listRowInsets(
-                        EdgeInsets(
-                            top: 10,
-                            leading: 16,
-                            bottom: 10,
-                            trailing: 16
-                        )
-                    )
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
+                    .quickNoteListRowStyle()
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
-            .contentMargins(.bottom, 40, for: .scrollContent)
+            .quickNoteListStyle()
             .onTapGesture {
                 isNewNoteFocused = true
             }
