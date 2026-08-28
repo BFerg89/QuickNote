@@ -10,6 +10,18 @@ import SwiftData
 
 enum NoteProcessor {
     @MainActor
+    static func retry(_ note: Note) async {
+        guard !note.isDeleted,
+              note.processingState == .completed ||
+                note.processingState == .failed else {
+            return
+        }
+
+        note.processingState = .pending
+        await process(note)
+    }
+
+    @MainActor
     static func process(_ note: Note) async {
         guard !note.isDeleted,
               note.processingState == .pending else {

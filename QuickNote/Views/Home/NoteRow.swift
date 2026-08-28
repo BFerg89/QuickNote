@@ -38,6 +38,17 @@ private struct ArcSpinner: View {
 struct NoteRow: View {
     let note: Note
     let delete: () -> Void
+    let regenerate: (() -> Void)?
+
+    init(
+        note: Note,
+        delete: @escaping () -> Void,
+        regenerate: (() -> Void)? = nil
+    ) {
+        self.note = note
+        self.delete = delete
+        self.regenerate = regenerate
+    }
 
     private var categoryColor: Color {
         switch note.category {
@@ -147,7 +158,17 @@ struct NoteRow: View {
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             Button(role: .destructive, action: delete) {
-                Label("Delete", systemImage: "trash")
+                Image(systemName: "trash")
+            }
+            .accessibilityLabel("Delete")
+        }
+        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+            if let regenerate {
+                Button(action: regenerate) {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .tint(categoryColor)
+                .accessibilityLabel("Regenerate")
             }
         }
     }

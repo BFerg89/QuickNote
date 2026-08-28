@@ -30,6 +30,8 @@ struct HomeView: View {
                     NoteRow(note: note, delete: {
                         sessionNotes.removeAll { $0 === note }
                         modelContext.delete(note)
+                    }, regenerate: {
+                        regenerate(note: note)
                     })
                     .listRowInsets(
                         EdgeInsets(
@@ -80,6 +82,12 @@ struct HomeView: View {
 
         Task {
             await NoteProcessor.process(note)
+        }
+    }
+
+    private func regenerate(note: Note) {
+        Task {
+            await NoteProcessor.retry(note)
         }
     }
 }
