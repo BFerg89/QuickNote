@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct NoteListView: View {
+    @Environment(\.modelContext) private var modelContext
+
     let category: NoteCategory?
     
     @Query(
@@ -28,7 +30,9 @@ struct NoteListView: View {
     
     var body: some View {
         List(notes) { note in
-            NoteRow(note: note, delete: {})
+            NoteRow(note: note) {
+                modelContext.delete(note)
+            }
         }
     }
 }

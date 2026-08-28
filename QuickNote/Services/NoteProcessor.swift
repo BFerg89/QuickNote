@@ -6,16 +6,22 @@
 //
 
 import Foundation
+import SwiftData
 
 enum NoteProcessor {
     @MainActor
     static func process(_ note: Note) async {
-        guard note.processingState == .pending else { return }
+        guard !note.isDeleted,
+              note.processingState == .pending else {
+            return
+        }
         
         note.processingState = .processing
         
         do {
             let generated = try await NoteGenerator.generate(from: note.rawText)
+
+            guard !note.isDeleted else { return }
             
             note.title = generated.title
             note.dueDate = date(from: generated.dueDate)
@@ -32,6 +38,8 @@ enum NoteProcessor {
             note.category = generated.category
             note.processingState = .completed
         } catch {
+            guard !note.isDeleted else { return }
+
             note.processingState = .failed
             print("Note processing failed: \(error)")
         }

@@ -138,6 +138,11 @@ struct NoteRow: View {
                 .multilineTextAlignment(.trailing)
             }
         }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            Button(role: .destructive, action: delete) {
+                Label("Delete", systemImage: "trash")
+            }
+        }
     }
 }
 

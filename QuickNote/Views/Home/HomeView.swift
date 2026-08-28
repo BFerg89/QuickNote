@@ -14,6 +14,10 @@ struct HomeView: View {
     @State private var sessionNotes: [Note] = []
     @State private var newNote: String = ""
     @FocusState private var isNewNoteFocused: Bool
+
+    private var visibleSessionNotes: [Note] {
+        sessionNotes.filter { !$0.isDeleted }
+    }
     
     var body: some View {
         ZStack {
@@ -21,35 +25,45 @@ struct HomeView: View {
                 .resizable(resizingMode: .tile)
                 .opacity(0.25)
                 .ignoresSafeArea()
-            GeometryReader { geometry in
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        //Notes + Input section
-                        ForEach(sessionNotes) { note in
-                            NoteRow(note: note, delete: {
-                                sessionNotes.removeAll { $0 === note }
-                                modelContext.delete(note)
-                            })
-                        }
-                        TextField("New Note...", text: $newNote)
-                            .focused($isNewNoteFocused)
-                            .onSubmit {
-                                addNote()
-                            }
-                        Spacer(minLength: 0)
-                            .frame(maxWidth: .infinity)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                isNewNoteFocused = true
-                            }
-                    }
-                    .padding()
-                    .frame(
-                        minHeight: geometry.size.height,
-                        alignment: .top
+            List {
+                ForEach(visibleSessionNotes) { note in
+                    NoteRow(note: note, delete: {
+                        sessionNotes.removeAll { $0 === note }
+                        modelContext.delete(note)
+                    })
+                    .listRowInsets(
+                        EdgeInsets(
+                            top: 10,
+                            leading: 16,
+                            bottom: 10,
+                            trailing: 16
+                        )
                     )
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
                 }
-                .contentMargins(.bottom, 40, for: .scrollContent)
+
+                TextField("New Note...", text: $newNote)
+                    .focused($isNewNoteFocused)
+                    .onSubmit {
+                        addNote()
+                    }
+                    .listRowInsets(
+                        EdgeInsets(
+                            top: 10,
+                            leading: 16,
+                            bottom: 10,
+                            trailing: 16
+                        )
+                    )
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+            }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .contentMargins(.bottom, 40, for: .scrollContent)
+            .onTapGesture {
+                isNewNoteFocused = true
             }
         }
     }
