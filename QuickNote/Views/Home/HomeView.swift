@@ -21,26 +21,36 @@ struct HomeView: View {
                 .resizable(resizingMode: .tile)
                 .opacity(0.25)
                 .ignoresSafeArea()
-            VStack(alignment: .leading, spacing: 20) {
-                //Notes + Input section
-                ForEach(sessionNotes) { note in
-                    NoteRow(note: note, delete: {
-                        sessionNotes.removeAll { $0 === note }
-                        modelContext.delete(note)
-                    })
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        //Notes + Input section
+                        ForEach(sessionNotes) { note in
+                            NoteRow(note: note, delete: {
+                                sessionNotes.removeAll { $0 === note }
+                                modelContext.delete(note)
+                            })
+                        }
+                        TextField("New Note...", text: $newNote)
+                            .focused($isNewNoteFocused)
+                            .onSubmit {
+                                addNote()
+                            }
+                        Spacer(minLength: 0)
+                            .frame(maxWidth: .infinity)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                isNewNoteFocused = true
+                            }
+                    }
+                    .padding()
+                    .frame(
+                        minHeight: geometry.size.height,
+                        alignment: .top
+                    )
                 }
-                TextField("New Note...", text: $newNote)
-                    .focused($isNewNoteFocused)
-                    .onSubmit {
-                        addNote()
-                    }
-                Color.clear
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        isNewNoteFocused = true
-                    }
+                .contentMargins(.bottom, 40, for: .scrollContent)
             }
-            .padding()
         }
     }
     
