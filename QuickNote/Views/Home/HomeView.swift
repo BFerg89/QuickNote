@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var modelContext
     
     @State private var sessionNotes: [Note] = []
@@ -17,6 +18,18 @@ struct HomeView: View {
 
     private var visibleSessionNotes: [Note] {
         sessionNotes.filter { !$0.isDeleted }
+    }
+
+    private var captureTextColor: Color {
+        if colorScheme == .dark {
+            Color(
+                red: 227.0 / 255.0,
+                green: 218.0 / 255.0,
+                blue: 201.0 / 255.0
+            )
+        } else {
+            Color("NoteText")
+        }
     }
     
     var body: some View {
@@ -36,6 +49,8 @@ struct HomeView: View {
 
                 TextField("New Note...", text: $newNote)
                     .focused($isNewNoteFocused)
+                    .tint(Color.accentColor)
+                    .foregroundStyle(captureTextColor)
                     .onSubmit {
                         addNote()
                     }

@@ -83,11 +83,23 @@ extension NoteCategory {
 }
 
 struct QuickNotePaperBackground: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
-        Image("paper-texture")
-            .resizable(resizingMode: .tile)
-            .opacity(0.25)
-            .ignoresSafeArea()
+        ZStack {
+            if colorScheme == .dark {
+                Color(
+                    red: 21.0 / 255.0,
+                    green: 20.0 / 255.0,
+                    blue: 18.0 / 255.0
+                )
+            }
+
+            Image("paper-texture")
+                .resizable(resizingMode: .tile)
+                .opacity(colorScheme == .dark ? 0.07 : 0.25)
+        }
+        .ignoresSafeArea()
     }
 }
 
