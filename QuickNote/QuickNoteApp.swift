@@ -10,8 +10,26 @@ import SwiftData
 import FirebaseCore
 import FirebaseAppCheck
 
+enum AppTheme: String, CaseIterable, Identifiable {
+    case light = "Light"
+    case dark = "Dark"
+    case system = "System"
+    
+    var id: Self { self }
+    
+    var colourScheme: ColorScheme? {
+        switch self {
+        case .light: return .light
+        case .dark: return .dark
+        case .system: return nil
+        }
+    }
+}
+
 @main
 struct QuickNoteApp: App {
+    @AppStorage("app_theme") private var selectedTheme: AppTheme = .system
+    
     init() {
         #if DEBUG
         let providerFactory = AppCheckDebugProviderFactory()
@@ -37,6 +55,7 @@ struct QuickNoteApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(selectedTheme.colourScheme)
         }
         .modelContainer(sharedModelContainer)
     }
