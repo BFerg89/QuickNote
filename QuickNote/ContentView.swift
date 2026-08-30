@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 enum Tabs {
-    case home, notes
+    case home, notes, settings
 }
 
 struct ContentView: View {
@@ -38,6 +38,13 @@ struct ContentView: View {
                 NavigationStack {
                     CategoriesView()
                         .quickNoteNavigationTitle("Notes")
+                }
+            }
+            
+            Tab("Settings", systemImage: "gear", value: .settings) {
+                NavigationStack {
+                    SettingsView()
+                        .quickNoteNavigationTitle("Settings")
                 }
             }
         }
