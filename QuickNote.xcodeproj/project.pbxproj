@@ -31,9 +31,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		919B6AA6302446BB007452E2 /* QuickNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		919B6AB5302446BD007452E2 /* QuickNoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickNoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		919B6ABF302446BD007452E2 /* QuickNoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickNoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		91CCA1E830436DB100E8D71E /* QuickNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		91CCA1E930436DB100E8D71E /* QuickNoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickNoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		91CCA1EA30436DB100E8D71E /* QuickNoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickNoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		91FE1FFA3028E5EE00927364 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = .gitignore; sourceTree = "<group>"; };
 		91FE20003028E71F00927364 /* AGENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AGENTS.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,18 +91,10 @@
 				919B6AA8302446BB007452E2 /* QuickNote */,
 				919B6AB8302446BD007452E2 /* QuickNoteTests */,
 				919B6AC2302446BD007452E2 /* QuickNoteUITests */,
-				919B6AA7302446BB007452E2 /* Products */,
+				91CCA1E830436DB100E8D71E /* QuickNote.app */,
+				91CCA1E930436DB100E8D71E /* QuickNoteTests.xctest */,
+				91CCA1EA30436DB100E8D71E /* QuickNoteUITests.xctest */,
 			);
-			sourceTree = "<group>";
-		};
-		919B6AA7302446BB007452E2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				919B6AA6302446BB007452E2 /* QuickNote.app */,
-				919B6AB5302446BD007452E2 /* QuickNoteTests.xctest */,
-				919B6ABF302446BD007452E2 /* QuickNoteUITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -129,7 +121,7 @@
 				91A09814303CB33A00D41A08 /* FirebaseAppCheck */,
 			);
 			productName = QuickNote;
-			productReference = 919B6AA6302446BB007452E2 /* QuickNote.app */;
+			productReference = 91CCA1E830436DB100E8D71E /* QuickNote.app */;
 			productType = "com.apple.product-type.application";
 		};
 		919B6AB4302446BD007452E2 /* QuickNoteTests */ = {
@@ -152,7 +144,7 @@
 			packageProductDependencies = (
 			);
 			productName = QuickNoteTests;
-			productReference = 919B6AB5302446BD007452E2 /* QuickNoteTests.xctest */;
+			productReference = 91CCA1E930436DB100E8D71E /* QuickNoteTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		919B6ABE302446BD007452E2 /* QuickNoteUITests */ = {
@@ -175,7 +167,7 @@
 			packageProductDependencies = (
 			);
 			productName = QuickNoteUITests;
-			productReference = 919B6ABF302446BD007452E2 /* QuickNoteUITests.xctest */;
+			productReference = 91CCA1EA30436DB100E8D71E /* QuickNoteUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -214,7 +206,7 @@
 				91A09811303CB33A00D41A08 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 919B6AA7302446BB007452E2 /* Products */;
+			productRefGroup = 919B6A9D302446BB007452E2;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -415,8 +407,9 @@
 		919B6ACA302446BD007452E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = JotsIcon2;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5J7RYKD385;
@@ -448,8 +441,9 @@
 		919B6ACB302446BD007452E2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = JotsIcon2;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5J7RYKD385;

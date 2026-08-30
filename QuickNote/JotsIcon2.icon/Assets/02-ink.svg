@@ -1,0 +1,13 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_4030_52)">
+<path d="M280 305C300 281 319 290 332 307C346 325 363 312 376 296C393 275 413 294 426 310C440 327 461 307 475 293C490 280 509 297 522 309C538 323 557 300 573 296C582 294 590 300 600 300H750" stroke="black" style="stroke:black;stroke-opacity:1;" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M280 447C306 407 331 480 358 443C384 407 410 477 438 443C464 413 489 467 516 445C534 430 553 444 590 445H750" stroke="black" style="stroke:black;stroke-opacity:1;" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M280 590C310 558 337 623 367 588C396 556 424 619 454 588C481 564 509 608 540 590H750" stroke="black" style="stroke:black;stroke-opacity:1;" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M280 737C313 711 345 762 378 735C410 711 441 755 474 736C498 722 519 735 538 735H750" stroke="black" style="stroke:black;stroke-opacity:1;" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_4030_52">
+<rect width="1024" height="1024" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
+</svg>

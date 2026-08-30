@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "figma-build": {
+      "source": "awdr74100/figwright",
+      "sourceType": "github",
+      "skillPath": "skills/figma-build/SKILL.md",
+      "computedHash": "27124bd8f5928d6f41e1272957147d41c416a2222ac37f5a2545395ae024c798"
+    },
     "firebase-ai-logic-basics": {
       "source": "firebase/agent-skills",
       "sourceType": "github",
