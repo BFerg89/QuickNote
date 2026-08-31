@@ -34,7 +34,6 @@ struct SettingsView: View {
                         .fontWeight(.medium)
                 }
             }
-            .foregroundStyle(Color("NoteText"))
             
             Section("Theme") {
                 Picker("Theme", selection: $selectedTheme) {
@@ -44,7 +43,6 @@ struct SettingsView: View {
                 }
                 .pickerStyle(.segmented)
             }
-            .foregroundStyle(Color("NoteText"))
         }
         .task {
             if notifications, !(await NotificationManager.manager.isAuthorized()) {
