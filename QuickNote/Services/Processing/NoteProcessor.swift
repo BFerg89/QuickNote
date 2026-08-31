@@ -51,6 +51,12 @@ enum NoteProcessor {
 
             note.category = generated.category
             note.processingState = .completed
+
+            NotificationManager.manager.cancelPendingNotification(note: note)
+
+            if note.dueDate != nil {
+                await NotificationManager.manager.scheduleNotification(note: note)
+            }
         } catch {
             guard !note.isDeleted else { return }
 

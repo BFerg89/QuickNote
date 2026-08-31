@@ -38,6 +38,7 @@ struct NoteListView: View {
 
             List(notes) { note in
                 NoteRow(note: note, delete: {
+                    NotificationManager.manager.cancelPendingNotification(note: note)
                     modelContext.delete(note)
                 }, regenerate: {
                     regenerate(note: note)

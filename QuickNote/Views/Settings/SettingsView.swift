@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @AppStorage("notifications_enabled") private var notifications = false
+    @AppStorage(NotificationManager.enabledPreferenceKey) private var notifications = false
     @AppStorage("app_theme") private var selectedTheme: AppTheme = .system
 
     private var notificationBinding: Binding<Bool> {
@@ -17,6 +17,7 @@ struct SettingsView: View {
         } set: { isEnabled in
             guard isEnabled else {
                 notifications = false
+                NotificationManager.manager.cancelAllPendingNotifications()
                 return
             }
 

@@ -40,6 +40,7 @@ struct HomeView: View {
                 ForEach(visibleSessionNotes) { note in
                     NoteRow(note: note, delete: {
                         sessionNotes.removeAll { $0 === note }
+                        NotificationManager.manager.cancelPendingNotification(note: note)
                         modelContext.delete(note)
                     }, regenerate: {
                         regenerate(note: note)
