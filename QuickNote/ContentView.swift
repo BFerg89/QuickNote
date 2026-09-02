@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 enum Tabs {
-    case home, notes, settings
+    case home, notes, settings, dictate
 }
 
 struct ContentView: View {
@@ -20,6 +20,7 @@ struct ContentView: View {
         "Save for later...", "Pass it to paper...", "Notes to self..."
     ]
     @State var currentTitle: String = ""
+    @State var isRecording: Bool = false
     @State var selectedTab: Tabs = .home
     
     var body: some View {
@@ -47,8 +48,40 @@ struct ContentView: View {
                         .quickNoteNavigationTitle("Settings")
                 }
             }
+            
+            Tab("Dictate", systemImage: "microphone", value: .dictate, role: .search) {
+                NavigationStack {
+                    HomeView()
+                        .quickNoteNavigationTitle(currentTitle)
+                }
+                .onAppear() {
+                    isRecording = true
+                }
+            }
         }
-        
+        .tabViewBottomAccessory(isEnabled: isRecording) {
+            HStack {
+                Text("0:28") //Placeholder for elapsed time
+                Spacer()
+                VStack {
+                    Image(systemName: "waveform") //Placeholder for live waveform
+                    Text("Call john tommorrow") //Placeholder for transcriptions
+                        .font(.caption)
+                        .foregroundStyle(Color("NoteText"))
+                        .opacity(0.75)
+                }
+                Spacer()
+                Button {
+                    isRecording = false
+                    selectedTab = .home
+                } label: {
+                    Label("Stop Recording", systemImage: "stop.circle")
+                }
+                .foregroundStyle(.red)
+                .labelStyle(.iconOnly)
+            }
+            .padding(.horizontal)
+        }
     }
 }
 
