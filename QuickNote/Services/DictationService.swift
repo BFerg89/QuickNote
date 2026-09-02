@@ -83,6 +83,7 @@ public final class DictationService {
         }
     }
 
+    /// Starts listening to the microphone and transcribing speech.
     public func start() async throws {
         guard case .idle = lifecycle else {
             throw ServiceError.alreadyActive
@@ -181,6 +182,7 @@ public final class DictationService {
         }
     }
 
+    /// Stops the transcription and returns the recognized text.
     public func stop() async throws -> String {
         switch lifecycle {
         case .idle:
@@ -208,6 +210,7 @@ public final class DictationService {
         }
     }
 
+    /// Cancels the transcription and discards any recognized text.
     public func cancel() {
         guard !isIdle else { return }
 
