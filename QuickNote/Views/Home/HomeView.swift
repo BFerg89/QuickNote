@@ -11,14 +11,11 @@ import SwiftData
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var modelContext
-    
-    @State private var sessionNotes: [Note] = []
+
+    let session: CaptureSession
+
     @State private var newNote: String = ""
     @FocusState private var isNewNoteFocused: Bool
-
-    private var visibleSessionNotes: [Note] {
-        sessionNotes.filter { !$0.isDeleted }
-    }
 
     private var captureTextColor: Color {
         if colorScheme == .dark {
@@ -37,11 +34,9 @@ struct HomeView: View {
             QuickNotePaperBackground()
 
             List {
-                ForEach(visibleSessionNotes) { note in
+                ForEach(session.visibleNotes) { note in
                     NoteRow(note: note, delete: {
-                        sessionNotes.removeAll { $0 === note }
-                        NotificationManager.manager.cancelPendingNotification(note: note)
-                        modelContext.delete(note)
+                        session.remove(note, from: modelContext)
                     }, regenerate: {
                         regenerate(note: note)
                     })
@@ -65,17 +60,8 @@ struct HomeView: View {
     }
     
     private func addNote() {
-        let trimmed = newNote.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        guard !trimmed.isEmpty else { return }
-        
-        let note = Note(text: trimmed)
-        modelContext.insert(note)
-        sessionNotes.append(note)
-        newNote = ""
-
-        Task {
-            await NoteProcessor.process(note)
+        if session.add(newNote, to: modelContext) {
+            newNote = ""
         }
     }
 
@@ -87,6 +73,6 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(session: CaptureSession())
         .modelContainer(for: Note.self, inMemory: true)
 }

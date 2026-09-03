@@ -13,21 +13,47 @@ enum Tabs {
 }
 
 struct ContentView: View {
+    private enum DictationPhase: Equatable {
+        case idle
+        case starting
+        case recording
+        case stopping
+    }
+
+    @Environment(\.modelContext) private var modelContext
+
     private let titles = [
         "Hold that thought!", "Write it down!", "Lock it in!",
         "Capture this!", "Drop it here!", "Quick jot!",
         "Mental note...", "Before you forget...",
         "Save for later...", "Pass it to paper...", "Notes to self..."
     ]
-    @State var currentTitle: String = ""
-    @State var isRecording: Bool = false
-    @State var selectedTab: Tabs = .home
+    @State private var currentTitle: String = ""
+    @State private var selectedTab: Tabs = .home
+    @State private var captureSession = CaptureSession()
+
+    @State private var dictationService = DictationService()
+    @State private var dictationPhase: DictationPhase = .idle
+    @State private var dictationError: String?
+
+    private var tabSelection: Binding<Tabs> {
+        Binding {
+            selectedTab
+        } set: { requestedTab in
+            if requestedTab == .dictate {
+                selectedTab = .home
+                startDictation()
+            } else {
+                selectedTab = requestedTab
+            }
+        }
+    }
     
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: tabSelection) {
             Tab("Home", systemImage: "square.and.pencil", value: .home) {
                 NavigationStack {
-                    HomeView()
+                    HomeView(session: captureSession)
                         .quickNoteNavigationTitle(currentTitle)
                 }
                 .onAppear {
@@ -50,20 +76,45 @@ struct ContentView: View {
             }
             
             Tab("Dictate", systemImage: "microphone", value: .dictate, role: .search) {
-                NavigationStack {
-                    HomeView()
-                        .quickNoteNavigationTitle(currentTitle)
-                }
-                .onAppear() {
-                    isRecording = true
-                }
+                EmptyView()
             }
         }
-        .tabViewBottomAccessory(isEnabled: isRecording) {
-            DictationAccessory {
-                isRecording = false
-                selectedTab = .home
+        .tabViewBottomAccessory(isEnabled: dictationPhase == .recording) {
+            DictationAccessory(stopRecording: stopDictation)
+        }
+    }
+
+    private func startDictation() {
+        guard dictationPhase == .idle else { return }
+
+        dictationPhase = .starting
+        dictationError = nil
+
+        Task {
+            do {
+                try await dictationService.start()
+                dictationPhase = .recording
+            } catch {
+                dictationPhase = .idle
+                dictationError = error.localizedDescription
             }
+        }
+    }
+
+    private func stopDictation() {
+        guard dictationPhase == .recording else { return }
+
+        dictationPhase = .stopping
+
+        Task {
+            do {
+                let transcript = try await dictationService.stop()
+                captureSession.add(transcript, to: modelContext)
+            } catch {
+                dictationError = error.localizedDescription
+            }
+
+            dictationPhase = .idle
         }
     }
 }
