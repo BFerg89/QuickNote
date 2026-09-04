@@ -84,7 +84,9 @@ public final class DictationService {
     }
 
     /// Starts listening to the microphone and transcribing speech.
-    public func start() async throws {
+    public func start(
+        onPartialResult: @escaping @MainActor (String) -> Void
+    ) async throws {
         guard case .idle = lifecycle else {
             throw ServiceError.alreadyActive
         }
@@ -109,7 +111,7 @@ public final class DictationService {
             }
 
             let request = SFSpeechAudioBufferRecognitionRequest()
-            request.shouldReportPartialResults = false
+            request.shouldReportPartialResults = true
             request.taskHint = .dictation
 
             self.recognizer = recognizer
@@ -146,18 +148,23 @@ public final class DictationService {
             recognitionTask = recognizer.recognitionTask(with: request) {
                 [weak self] result,
                 error in
-                guard result?.isFinal == true || error != nil else { return }
+                let transcript = result?.bestTranscription.formattedString
+                let terminalResult: Result<String, ServiceError>?
 
-                let terminalResult: Result<String, ServiceError>
-                if let result, result.isFinal {
-                    terminalResult = .success(
-                        result.bestTranscription.formattedString
-                    )
-                } else {
+                if result?.isFinal == true, let transcript {
+                    terminalResult = .success(transcript)
+                } else if error != nil {
                     terminalResult = .failure(.recognitionFailed)
+                } else {
+                    terminalResult = nil
                 }
 
                 Task { @MainActor [weak self] in
+                    if let transcript {
+                        onPartialResult(transcript)
+                    }
+
+                    guard let terminalResult else { return }
                     self?.finishRecognition(
                         terminalResult,
                         sessionID: sessionID

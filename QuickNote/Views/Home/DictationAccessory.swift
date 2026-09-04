@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DictationAccessory: View {
     var startedAt: Date
+    var transcript: String
     let stopRecording: () -> Void
 
     var body: some View {
@@ -38,11 +39,11 @@ struct DictationAccessory: View {
                 }
                 .font(.caption)
 
-                Text("Call John tomorrow") // Placeholder for live transcription
+                Text(transcript.isEmpty ? "Start speaking…" : transcript)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
-                    .truncationMode(.tail)
+                    .truncationMode(.head)
             }
             .accessibilityElement(children: .combine)
 
@@ -66,7 +67,10 @@ struct DictationAccessory: View {
 }
 
 #Preview {
-    DictationAccessory(startedAt: Date.now) {
+    DictationAccessory(
+        startedAt: Date.now,
+        transcript: "Call John tomorrow and ask about dinner next week"
+    ) {
         return
     }
 }
