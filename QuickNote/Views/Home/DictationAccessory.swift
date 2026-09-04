@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DictationAccessory: View {
+    var startedAt: Date
     let stopRecording: () -> Void
 
     var body: some View {
@@ -27,7 +28,11 @@ struct DictationAccessory: View {
                     Text("·")
                         .foregroundStyle(.tertiary)
 
-                    Text("0:28") // Placeholder for elapsed time
+                    Text(
+                        timerInterval: startedAt...Date.distantFuture,
+                        countsDown: false,
+                        showsHours: false
+                    ) // Placeholder for elapsed time
                         .monospacedDigit()
                         .foregroundStyle(.secondary)
                 }
@@ -61,7 +66,7 @@ struct DictationAccessory: View {
 }
 
 #Preview {
-    DictationAccessory {
+    DictationAccessory(startedAt: Date.now) {
         return
     }
 }

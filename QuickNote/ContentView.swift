@@ -35,6 +35,7 @@ struct ContentView: View {
     @State private var dictationService = DictationService()
     @State private var dictationPhase: DictationPhase = .idle
     @State private var dictationError: String?
+    @State private var dictationStartedAt: Date = Date.now
 
     private var tabSelection: Binding<Tabs> {
         Binding {
@@ -80,7 +81,7 @@ struct ContentView: View {
             }
         }
         .tabViewBottomAccessory(isEnabled: dictationPhase == .recording) {
-            DictationAccessory(stopRecording: stopDictation)
+            DictationAccessory(startedAt: dictationStartedAt, stopRecording: stopDictation)
         }
     }
 
@@ -93,6 +94,7 @@ struct ContentView: View {
         Task {
             do {
                 try await dictationService.start()
+                dictationStartedAt = .now
                 dictationPhase = .recording
             } catch {
                 dictationPhase = .idle
